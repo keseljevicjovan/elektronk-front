@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 :root {
 	font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 	line-height: 1.5;
@@ -54,6 +56,10 @@ main {
 	max-width: 1280px;
 	margin: 0 auto;
 	text-align: center;
+}
+
+img {
+  display: inline;
 }
 
 @media (max-width: 639px) {
