@@ -7,6 +7,9 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
+		"@aduh95/preact-fontawesome": "^0.1.5",
+		"@fortawesome/free-brands-svg-icons": "^7.0.0",
+		"@fortawesome/free-solid-svg-icons": "^7.0.0",
 		"@tailwindcss/vite": "^4.1.12",
 		"preact": "^10.26.9",
 		"preact-iso": "^2.10.0",
