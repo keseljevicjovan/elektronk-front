@@ -5,6 +5,7 @@ import { Header } from './components/Header.jsx';
 import { Footer } from './components/Footer.jsx';
 import { Home } from './pages/Home/index.jsx';
 import { About } from './pages/About/index.jsx';
+import { Documents } from './pages/Documents/index.jsx';
 import { Programs } from './pages/Programs/index.jsx';
 import { NotFound } from './pages/_404.jsx';
 import './style.css';
@@ -18,6 +19,7 @@ export function App() {
 					<Route path="/" component={Home} />
 					<Route path="/o-nama" component={About} />
 					<Route path="/smjerovi" component={Programs} />
+					<Route path="/dokumenta" component={Documents} />
 					<Route default component={NotFound} />
 				</Router>
 			</main>
