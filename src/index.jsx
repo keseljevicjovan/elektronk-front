@@ -9,6 +9,7 @@ import { Documents } from './pages/Documents/index.jsx';
 import { Competitions } from './pages/Competitions/index.jsx';
 import { Contact } from './pages/Contact/index.jsx';
 import { Programs } from './pages/Programs/index.jsx';
+import { Gallery } from './pages/Gallery/index.jsx';
 import { News } from './pages/News/index.jsx';
 import { NotFound } from './pages/_404.jsx';
 import './style.css';
@@ -26,6 +27,7 @@ export function App() {
 					<Route path="/takmicenja" component={Competitions} />
 					<Route path="/kontakt" component={Contact} />
 					<Route path="/vijesti" component={News} />
+					<Route path="/galerija" component={Gallery} />
 					<Route default component={NotFound} />
 				</Router>
 			</main>
