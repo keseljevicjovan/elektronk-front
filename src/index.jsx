@@ -18,7 +18,7 @@ export function App() {
 	return (
 		<LocationProvider>
 			<Header />
-			<main>
+			<main class="bg-gray-50">
 				<Router>
 					<Route path="/" component={Home} />
 					<Route path="/o-nama" component={About} />
