@@ -1,10 +1,11 @@
 import { FontAwesomeIcon } from '@aduh95/preact-fontawesome';
 import { faCheck, faUserTie, faUserGraduate } from '@fortawesome/free-solid-svg-icons';
+import './style.css';
 
 export function About() {
 	return (
     <div class="about">
-      <section class="pt-32 pb-20 bg-white">
+      <section class="pt-32 pb-20">
         <div class="max-w-7xl mx-auto px-6">
           <div class="text-center mb-16">
             <h1 class="text-5xl font-bold text-gray-800 mb-6">O Našoj Školi</h1>
