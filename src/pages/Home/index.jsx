@@ -143,7 +143,7 @@ export function Home() {
               { title: 'Elektrotehnika', icon: faBolt, color: 'accent', features: ['Električna kola i mašine', 'Energetski sistemi', 'Automatika i regulacija'] },
               { title: 'Računarstvo', icon: faLaptopCode, color: 'success', features: ['Programski jezici (C++, Java, Python)', 'Web tehnologije', 'Baze podataka i mreže'] }
             ].map((smjer, idx) => (
-              <div key={idx} className={`hover-lift bg-white p-8 rounded-xl shadow-lg text-center border-t-4 border-${smjer.color}`}>
+              <div key={idx} className={`hover-lift p-8 rounded-xl shadow-lg text-center border-t-4 border-${smjer.color}`}>
                 <div className={`w-20 h-20 bg-${smjer.color}/10 rounded-full flex items-center justify-center mx-auto mb-6`}>
                   <FontAwesomeIcon icon={smjer.icon} className={`text-3xl text-${smjer.color}`} />
                 </div>
@@ -166,7 +166,7 @@ export function Home() {
         </div>
       </section>
 
-      <section className="py-20 bg-gray-50 relative overflow-hidden">
+      <section className="py-20 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-800 mb-4">Najnovije Vijesti</h2>
@@ -178,7 +178,7 @@ export function Home() {
               { title: 'Novi laboratorij', icon: faMicroscope, date: '10. Decembar 2024', desc: 'Otvoren je novi laboratorij opremljen najsavremenijom opremom za proučavanje...' },
               { title: 'Partnerstvo sa lokalnim preduzećima', icon: faHandshake, date: '5. Decembar 2024', desc: 'Potpisani ugovori o saradnji sa vodećim kompanijama za praksu učenika...' }
             ].map((news, idx) => (
-              <article key={idx} className="news-card bg-white rounded-xl shadow-lg overflow-hidden">
+              <article key={idx} className="news-card rounded-xl shadow-lg overflow-hidden">
                 <div className={`h-48 bg-gradient-to-br from-primary to-secondary flex items-center justify-center`}>
                   <FontAwesomeIcon icon={news.icon} className="text-4xl text-white" />
                 </div>
