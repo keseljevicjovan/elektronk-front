@@ -1,15 +1,12 @@
-# `create-preact`
+# Elektro Škola Nikšić
 
-<h2 align="center">
-  <img height="256" width="256" src="./src/assets/preact.svg">
-</h2>
+Repozentorijum sadrži frontend kod za web sajt **JU Srednja Stručna Škola Nikšić**.
+Projekat je napravljen koristeći Preact + Vite, i oslanja se na [backend API](https://github.com/keseljevicjovan/elektronk-back) napisan u Laravelu.
 
-<h3 align="center">Get started using Preact and Vite!</h3>
+## Pokretanje lokalnog servera
 
-## Getting Started
-
--   `pnpm dev` - Starts a dev server at http://localhost:5173/
-
--   `pnpm build` - Builds for production, emitting to `dist/`
-
--   `pnpm preview` - Starts a server at http://localhost:4173/ to test production build locally
+```sh
+cp .env.example .env
+pnpm install
+pnpm dev
+```
