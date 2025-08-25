@@ -2,6 +2,7 @@ import { h } from 'preact';
 import { useState, useEffect } from 'preact/hooks';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@aduh95/preact-fontawesome';
+import { fetchImages } from '../../services/api';
 import './style.css';
 
 export function Gallery() {
@@ -20,18 +21,14 @@ export function Gallery() {
     setTimeout(() => setOpenModalId(null), 300);
   };
 
-  useEffect(() => {
-    fetch('http://localhost:8000/api/images')
-      .then((res) => res.json())
-      .then((data) => {
-        setImages(data.data || data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error('Error fetching images:', err);
-        setLoading(false);
-      });
-  }, []);
+useEffect(() => {
+  fetchImages().then(data => {
+    setImages(data);
+    setLoading(false);
+  }).catch(err => {
+    setLoading(false);
+  });
+}, []);
 
   if (loading) {
     return <div class="text-center py-16">Učitavanje slika...</div>;
@@ -55,7 +52,11 @@ export function Gallery() {
                 class="gallery-item bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer"
                 onClick={() => openModal(image.id)}
               >
-                <img src={`http://localhost:8000${image.url}`} alt={image.title} class="h-64 w-full object-cover" />
+                <img
+                  src={`${import.meta.env.VITE_API_HOST}${image.url}`}
+                  alt={image.title}
+                  class="h-64 w-full object-cover"
+                />
                 <div class="p-4">
                   <h3 class="font-bold mb-2">{image.title}</h3>
                   <p class="text-gray-600 text-sm">{image.description}</p>
@@ -86,7 +87,7 @@ export function Gallery() {
                   </button>
                 </div>
                 <img
-                  src={`http://localhost:8000${image.url}`}
+                  src={`${import.meta.env.VITE_API_HOST}${image.url}`}
                   alt={image.title}
                   class="w-full h-auto max-h-[80vh] object-contain rounded-lg mb-4"
                 />
