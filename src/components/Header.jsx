@@ -1,4 +1,4 @@
-import { useState } from 'preact/hooks';
+import { useState, useEffect } from 'preact/hooks';
 import { useLocation } from 'preact-iso';
 import { FontAwesomeIcon } from '@aduh95/preact-fontawesome';
 import { faUsers, faGraduationCap, faFileAlt, faNewspaper, faBars } from '@fortawesome/free-solid-svg-icons';
@@ -6,8 +6,23 @@ import { faUsers, faGraduationCap, faFileAlt, faNewspaper, faBars } from '@forta
 export function Header() {
   const { url } = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [atTop, setAtTop] = useState(true);
 
   const toggleMobileMenu = () => setMobileOpen(!mobileOpen);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (url === '/') {
+        setAtTop(window.scrollY === 0);
+      } else {
+        setAtTop(false);
+      }
+    };
+
+    handleScroll();
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [url]);
 
   const navLinks = [
     { name: 'Početna', href: '/' },
@@ -44,19 +59,21 @@ export function Header() {
   ];
 
   return (
-    <nav class="fixed w-full z-50 bg-white/95 backdrop-blur-sm shadow-sm">
+    <nav class={`fixed w-full z-50 transition-colors duration-300 ${atTop ? 'bg-transparent text-white' : 'bg-white/95 text-gray-800 backdrop-blur-sm shadow-sm'}`}>
       <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
         <a href="/" class="flex items-center space-x-6">
-          <img src="/logo.avif" alt="Logo" class="w-12 h-12 object-contain block" />
           <div>
-            <h1 class="text-xl font-bold text-blue-500">Elektro Škola</h1>
-            <p class="text-sm text-blue-500">JU Srednja Stručna Škola Nikšić</p>
+            <img src="/logo.avif" alt="Logo" class="w-12 h-12 object-contain block" />
+          </div>
+          <div>
+            <h1 class={`text-xl font-bold ${atTop ? 'text-white' : 'text-secondary'}`}>Elektro Škola</h1>
+            <p class={`text-sm ${atTop ? 'text-white' : 'text-secondary'}`}>JU Srednja Stručna Škola Nikšić</p>
           </div>
         </a>
         <div class="hidden md:flex ml-6 space-x-6">
           {navLinks.map(link => (
             <div class="relative group">
-              <a href={link.href} class={`flex items-center space-x-1 ${url === link.href ? 'text-blue-500 font-semibold' : 'text-gray-800 hover:text-blue-500'}`}>
+              <a href={link.href} class={`flex items-center space-x-1 ${url === link.href ? (atTop ? 'text-white font-semibold' : 'text-secondary font-semibold') : (atTop ? 'text-white hover:text-gray-300' : 'text-gray-800 hover:text-secondary')}`}>
                 <span>{link.name}</span>
               </a>
               {link.dropdown && (
@@ -73,15 +90,20 @@ export function Header() {
           ))}
         </div>
 
-        <button class="md:hidden text-gray-800" onClick={toggleMobileMenu}>
+        <button class={`md:hidden ${atTop ? 'text-white' : 'text-gray-800'}`} onClick={toggleMobileMenu}>
           <FontAwesomeIcon icon={faBars} class="w-8 h-8" />
         </button>
       </div>
 
       {mobileOpen && (
-        <div class="md:hidden w-full bg-white shadow-lg flex flex-col p-4 space-y-2">
+        <div className="md:hidden w-full bg-white shadow-lg flex flex-col p-4 space-y-2">
           {navLinks.map(link => (
-            <a href={link.href} class={`${url === link.href ? 'text-blue-500 font-semibold' : 'text-gray-800 hover:text-blue-500'}`}>
+            <a
+              key={link.href}
+              href={link.href}
+              className={`${url === link.href ? 'text-secondary font-semibold' : 'text-gray-800 hover:text-secondary'}`}
+              onClick={() => setMobileOpen(false)}
+            >
               {link.name}
             </a>
           ))}

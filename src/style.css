@@ -1,5 +1,14 @@
 @import "tailwindcss";
 
+@theme {
+  --color-primary: #0f4c81;
+  --color-secondary: #3498db;
+  --color-accent: #f39c12;
+  --color-success: #27ae60;
+  --color-warning: #e67e22;
+  --color-danger: #e74c3c;
+}
+
 :root {
 	line-height: 1.5;
 	font-weight: 400;
@@ -24,22 +33,13 @@ body {
 	min-height: 100vh;
 }
 
-main {
-	flex: auto;
-	display: flex;
-	align-items: center;
-	max-width: 1280px;
-	margin: 0 auto;
-	text-align: center;
-}
-
 img {
   display: inline;
   margin: 0;
 }
 
-@media (max-width: 639px) {
-	main {
-		margin: 2rem;
-	}
+
+main {
+	flex: auto;
+	align-items: center;
 }
