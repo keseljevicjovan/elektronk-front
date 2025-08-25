@@ -37,3 +37,9 @@ img {
   display: inline;
   margin: 0;
 }
+
+
+main {
+	flex: auto;
+	align-items: center;
+}

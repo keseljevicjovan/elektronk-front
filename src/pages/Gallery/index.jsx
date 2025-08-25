@@ -1,23 +1,41 @@
 import { h } from 'preact';
-import { useState } from 'preact/hooks';
+import { useState, useEffect } from 'preact/hooks';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@aduh95/preact-fontawesome';
-import { faSchool, faChalkboard, faUtensils, faMicroscope, faLaptopCode, faSolarPanel, faTrophy, faGraduationCap, faCalendarDay, faUsers, faProjectDiagram, faHandshake, faTimes } from '@fortawesome/free-solid-svg-icons';
-import './style.css'
+import './style.css';
 
 export function Gallery() {
   const [openModalId, setOpenModalId] = useState(null);
+  const [images, setImages] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [fade, setFade] = useState(false);
 
-  const openModal = (id) => setOpenModalId(id);
-  const closeModal = () => setOpenModalId(null);
+  const openModal = (id) => {
+    setOpenModalId(id);
+    setFade(true);
+  };
 
-  const galleryItems = [
-    { id: 'modal1', category: 'facilities', title: 'Glavna zgrada škole', desc: 'Moderna zgrada sa 30 učionica', icon: faSchool, gradient: 'from-primary to-secondary' },
-    { id: 'modal2', category: 'facilities', title: 'Učionica za teoriju', desc: 'Opremljena najsavremenijom tehnologijom', icon: faChalkboard, gradient: 'from-accent to-warning' },
-    { id: 'modal7', category: 'events', title: 'Takmičenje 2024', desc: 'Pobjednici republičkog takmičenja', icon: faTrophy, gradient: 'from-primary to-accent' },
-    { id: 'modal9', category: 'events', title: 'Dan otvorenih vrata', desc: 'Posjetitelji upoznaju našu školu', icon: faCalendarDay, gradient: 'from-accent to-primary' },
-    { id: 'modal10', category: 'students', title: 'Učenici na praksi', desc: 'Praktičan rad u laboratoriju', icon: faUsers, gradient: 'from-success to-warning' },
-    { id: 'modal11', category: 'students', title: 'Projektni rad', desc: 'Učenici rade na svojim projektima', icon: faProjectDiagram, gradient: 'from-primary to-warning' },
-  ];
+  const closeModal = () => {
+    setFade(false);
+    setTimeout(() => setOpenModalId(null), 300);
+  };
+
+  useEffect(() => {
+    fetch('http://localhost:8000/api/images')
+      .then((res) => res.json())
+      .then((data) => {
+        setImages(data.data || data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error('Error fetching images:', err);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) {
+    return <div class="text-center py-16">Učitavanje slika...</div>;
+  }
 
   return (
     <div class="gallery">
@@ -26,36 +44,21 @@ export function Gallery() {
           <div class="text-center mb-16">
             <h1 class="text-5xl font-bold text-gray-800 mb-6">Galerija</h1>
             <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-              Pogledajte fotografije naših prostorija, laboratorija, događaja i aktivnosti učenika.
+              Pogledajte fotografije naših prostorija, događaja i aktivnosti učenika.
             </p>
           </div>
 
-          <div class="flex flex-wrap justify-center gap-4 mb-12">
-            {['Sve', 'Prostorije', 'Događaji', 'Učenici'].map((cat) => (
-              <button
-                class={`gallery-filter px-6 py-2 rounded-full font-semibold ${
-                  cat === 'Sve' ? 'active bg-secondary text-white' : 'bg-white text-gray-600 hover:bg-secondary hover:text-white transition-colors'
-                }`}
-                data-filter={cat.toLowerCase()}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-
           <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {galleryItems.map(item => (
+            {images.map((image) => (
               <div
-                key={item.id}
-                class={`gallery-item ${item.category} bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer`}
-                onClick={() => openModal(item.id)}
+                key={image.id}
+                class="gallery-item bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer"
+                onClick={() => openModal(image.id)}
               >
-                <div class={`h-64 bg-gradient-to-br ${item.gradient} flex items-center justify-center`}>
-                  <FontAwesomeIcon icon={item.icon} class="text-6xl text-white w-16" />
-                </div>
+                <img src={`http://localhost:8000${image.url}`} alt={image.title} class="h-64 w-full object-cover" />
                 <div class="p-4">
-                  <h3 class="font-bold mb-2">{item.title}</h3>
-                  <p class="text-gray-600 text-sm">{item.desc}</p>
+                  <h3 class="font-bold mb-2">{image.title}</h3>
+                  <p class="text-gray-600 text-sm">{image.description}</p>
                 </div>
               </div>
             ))}
@@ -63,23 +66,34 @@ export function Gallery() {
         </div>
       </section>
 
-      {galleryItems.map(item =>
-        openModalId === item.id && (
-          <div key={item.id} class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-            <div class="bg-white rounded-xl max-w-2xl w-full p-6 relative">
-              <div class="flex justify-between items-center mb-4">
-                <h3 class="text-2xl font-bold">{item.title}</h3>
-                <button onClick={closeModal} class="text-2xl text-gray-500 hover:text-gray-700">
-                  <FontAwesomeIcon icon={faTimes} />
-                </button>
+      {images.map(
+        (image) =>
+          openModalId === image.id && (
+            <div
+              key={image.id}
+              class={`fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 transition-opacity duration-300 ${
+                fade ? 'opacity-100' : 'opacity-0'
+              }`}
+              onClick={(e) => {
+                if (e.target === e.currentTarget) closeModal();
+              }}
+            >
+              <div class="bg-white rounded-xl max-w-4xl w-full p-6 relative transform transition-transform duration-300 scale-100">
+                <div class="flex justify-between items-center mb-4">
+                  <h3 class="text-2xl font-bold">{image.title}</h3>
+                  <button onClick={closeModal} class="text-2xl text-gray-500 hover:text-gray-700">
+                    <FontAwesomeIcon icon={faTimes} />
+                  </button>
+                </div>
+                <img
+                  src={`http://localhost:8000${image.url}`}
+                  alt={image.title}
+                  class="w-full h-auto max-h-[80vh] object-contain rounded-lg mb-4"
+                />
+                <p class="text-gray-600">{image.description}</p>
               </div>
-              <div class={`h-96 bg-gradient-to-br ${item.gradient} rounded-lg flex items-center justify-center mb-4`}>
-                <FontAwesomeIcon icon={item.icon} class="text-8xl text-white w-32" />
-              </div>
-              <p class="text-gray-600">{item.desc}</p>
             </div>
-          </div>
-        )
+          )
       )}
     </div>
   );
